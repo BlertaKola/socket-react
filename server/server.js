@@ -8,6 +8,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));  
 require('./config/mongoose.config');   
 require('./routes/user.routes')(app);
+require('./routes/chat.routes')(app);
+require('./routes/message.routes')(app);
 const port = 8000
 const server = app.listen(port, () => {
     console.log(`Listening on port: ${port}`)

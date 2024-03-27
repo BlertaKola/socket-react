@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import Chat from './components/Chat';
+import Chat from './Chat';
 import io from 'socket.io-client';
-import Message from './components/Message';
+import Message from './Message';
 import axios from 'axios';
 import {Link} from 'react-router-dom'
 function App() {

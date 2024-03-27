@@ -6,3 +6,9 @@ module.exports.createUser = (request, response) => {
         .catch(err => response.status(400).json(err));
 }
 
+
+module.exports.getAllUsers = (request, response) => {
+    User.find()
+        .then(res => response.json(res))
+        .catch(err => response.json(err))
+}
