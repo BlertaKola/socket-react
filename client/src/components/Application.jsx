@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 import Message from './Message';
 import axios from 'axios';
 import {Link} from 'react-router-dom'
-function App() {
+function Application() {
   // const [messages, setMessages] = useState([]);
   const [chatRooms, setChatRooms] = useState([])
   const [joinedChats, setJoinedChats] = useState([])
@@ -91,4 +91,4 @@ function App() {
   );
 }
 
-export default App;
+export default Application;

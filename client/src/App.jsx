@@ -4,7 +4,8 @@ import Chat from './components/Chat';
 import io from 'socket.io-client';
 import Message from './components/Message';
 import axios from 'axios';
-import {Link} from 'react-router-dom'
+import {BrowserRouter, Link, Route, Routes} from 'react-router-dom'
+import Application from './components/Application';
 function App() {
   // const [messages, setMessages] = useState([]);
   const [chatRooms, setChatRooms] = useState([])
@@ -16,17 +17,17 @@ function App() {
   const [socket] = useState(io('http://localhost:8000'));
 
 
-  useEffect(()=>{
-    axios.get('http://localhost:8000/api/chats')
-      .then(res => {
-        console.log(res.data)
-        setChatRooms(res.data)
-      })
-      .catch(err => console.log(err))
+  // useEffect(()=>{
+  //   axios.get('http://localhost:8000/api/chats')
+  //     .then(res => {
+  //       console.log(res.data)
+  //       setChatRooms(res.data)
+  //     })
+  //     .catch(err => console.log(err))
 
     
       
-  },[])
+  // },[])
   
 
   // useEffect(() => {
@@ -35,19 +36,19 @@ function App() {
   //   });
   // }, [messages]);
 
-  const handleRegistration = (e) => {
-    e.preventDefault()
-    if (name.trim() !== "") {
-      axios.post('http://localhost:8000/api/users', {name: name})
-        .then(res => {
-          console.log(res.data)
-          console.log("User registered:", name);
-          setIsRegistered(true);
-        })
-        .catch(err => console.log(err))
-      // setIsRegistered(true);
-    }
-  };
+  // const handleRegistration = (e) => {
+  //   e.preventDefault()
+  //   if (name.trim() !== "") {
+  //     axios.post('http://localhost:8000/api/users', {name: name})
+  //       .then(res => {
+  //         console.log(res.data)
+  //         console.log("User registered:", name);
+  //         setIsRegistered(true);
+  //       })
+  //       .catch(err => console.log(err))
+  //     // setIsRegistered(true);
+  //   }
+  // };
 
   // const sendMessage = () => {
   //   if (isRegistered && messageText.trim() !== "") {
@@ -68,7 +69,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <h1>MERN Chat </h1>
+        {/* <h1>MERN Chat </h1>
         {!isRegistered ? (
           <div className="registration-form">
             <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name"/>
@@ -76,16 +77,17 @@ function App() {
           </div>
         ) : (
           <>
-            <Link to='/create/chat'>Create a chat</Link>
-            {chatRooms.map((chat, index)=>{
-              return(
-                <>
-                <p key={index}>HELP</p>
-                </>
-              )
-            })}
+            
           </>
-        )}
+        )} */}
+
+
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Application/>}></Route>
+          </Routes>
+        </BrowserRouter>
+
       </div>
     </>
   );
