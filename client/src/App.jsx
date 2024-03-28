@@ -4,31 +4,20 @@ import Chat from './components/Chat';
 import io from 'socket.io-client';
 import Message from './components/Message';
 import axios from 'axios';
-import {BrowserRouter, Link, Route, Routes} from 'react-router-dom'
-import Application from './components/Application';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
+import Register from './components/Register';
+import Login from './components/Login';
+import Chats from './components/Chats';
+import ChatRoom from './components/ChatRoom';
 function App() {
-  // const [messages, setMessages] = useState([]);
-  const [chatRooms, setChatRooms] = useState([])
-  const [joinedChats, setJoinedChats] = useState([])
-  const [chat, setChat] = useState("")
-  // const [messageText, setMessageText] = useState("");
-  const [name, setName] = useState("");
-  const [isRegistered, setIsRegistered] = useState(false);
+
+  const userId = localStorage.getItem('userId');
   const [socket] = useState(io('http://localhost:8000'));
 
 
-  // useEffect(()=>{
-  //   axios.get('http://localhost:8000/api/chats')
-  //     .then(res => {
-  //       console.log(res.data)
-  //       setChatRooms(res.data)
-  //     })
-  //     .catch(err => console.log(err))
 
-    
-      
-  // },[])
-  
+
+
 
   // useEffect(() => {
   //   socket.on('message', (message) => {
@@ -36,19 +25,7 @@ function App() {
   //   });
   // }, [messages]);
 
-  // const handleRegistration = (e) => {
-  //   e.preventDefault()
-  //   if (name.trim() !== "") {
-  //     axios.post('http://localhost:8000/api/users', {name: name})
-  //       .then(res => {
-  //         console.log(res.data)
-  //         console.log("User registered:", name);
-  //         setIsRegistered(true);
-  //       })
-  //       .catch(err => console.log(err))
-  //     // setIsRegistered(true);
-  //   }
-  // };
+
 
   // const sendMessage = () => {
   //   if (isRegistered && messageText.trim() !== "") {
@@ -66,25 +43,42 @@ function App() {
     });
   }, []);
 
+
+
+
+
   return (
     <>
       <div className="App">
-        {/* <h1>MERN Chat </h1>
-        {!isRegistered ? (
-          <div className="registration-form">
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name"/>
-            <button onClick={handleRegistration}>Register</button>
-          </div>
-        ) : (
-          <>
-            
-          </>
-        )} */}
-
-
         <BrowserRouter>
+          {/* <h1>{userId}</h1> */}
+
           <Routes>
-            <Route path='/' element={<Application/>}></Route>
+            {
+              userId ?
+                <>
+                  <Route path='/' element={<Chats />}></Route>
+                  <Route path='/chats' element={<Chats/>} />
+                  <Route path='/chats/create' element={<Chat />} />
+                  <Route path='/chats/:id' element={<ChatRoom/>} />
+
+
+                </>
+                :
+                <>
+                  <Route path='/' element={<Register />}></Route>
+                  <Route path='/register' element={<Register />} />
+                  <Route path='/login' element={<Login />} />
+                  <Route path='/chat/create' element={<Register />} />
+                  <Route path='/chats/create' element={<Register />} />
+
+                </>
+            }
+            {/* <Route path='/' element={<Application />}></Route>
+            <Route path='/register' element={<Register />} />
+            <Route path='/login' element={<Login />} />
+
+            <Route path='/chat/create' element={<Chat />} /> */}
           </Routes>
         </BrowserRouter>
 
