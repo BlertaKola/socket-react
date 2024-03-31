@@ -11,53 +11,52 @@ const ChatRoom = () => {
     const [messages, setMessages] = useState([]);
     const [messageText, setMessageText] = useState("");
     const userId = localStorage.getItem("userId");
+    const [update, setUpdated] = useState(false)
 
     useEffect(() => {
-        // Fetch initial messages for the chat room
         axios.get(`http://localhost:8000/api/messages/${id}`, { withCredentials: true })
             .then(res => {
                 setMessages(res.data);
+                
             })
             .catch(err => console.log(err));
 
-        // Listen for new messages from the server
         socket.on("message", (message) => {
-            // Check if the received message belongs to the current chat room
-            if (message.chat === id) {
-                setMessages(prevMessages => [...prevMessages, message]);
-            }
+            setUpdated(!update)
         });
 
-        // Clean up event listener
         return () => {
             socket.off("message");
         };
-    }, [id]);
+    }, [update]);
 
     const sendMessage = () => {
         if (messageText.trim() !== "") {
-            // Send message to the server
             axios.post(`http://localhost:8000/api/messages`, {
                 text: messageText,
                 user: userId,
                 chat: id
             }, { withCredentials: true })
             .then(res => {
-                // Clear the message input field
+                socket.emit('sendMessage', {
+                    text: messageText,
+                    user: userId,
+                    chat: id
+                });
                 setMessageText("");
             })
-            .catch(err => console.log(err)); // Handle errors
+            .catch(err => console.log(err)); 
         }
     };
 
     return (
         <>
-            <h5>Start chatting</h5>
+            <h5>Start chatting {id}</h5>
             <div className="messages-container">
                 {messages.map((message, index) => (
                     <Message
                         key={index}
-                        name={message.user.name} // Assuming user name is available in message.user.name
+                        name={message.user.name} 
                         text={message.text}
                     />
                 ))}
